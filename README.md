@@ -56,4 +56,4 @@ Instagram: https://www.instagram.com/_khadar06_
 Author
 Khadar Nainar
 
-Built with HTML, CSS, and JavaScript. ```
+Built with HTML, CSS, and JavaScript.
