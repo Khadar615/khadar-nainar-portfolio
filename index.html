@@ -564,8 +564,7 @@
     </div>
 
 
-    <div class="cert-carousel">
-      <div class="cert-grid reveal" id="certTrack">
+    <div class="cert-grid reveal">
 
       <div class="cert-card">
 
@@ -727,13 +726,6 @@
 
       </div>
 
-      </div>
-    </div>
-
-    <div class="carousel-controls" aria-label="Certificate carousel controls">
-      <button class="carousel-btn" type="button" data-carousel="cert" data-direction="previous">Previous</button>
-      <button class="carousel-btn" type="button" data-carousel="cert" data-action="pause" aria-pressed="false">Pause</button>
-      <button class="carousel-btn" type="button" data-carousel="cert" data-direction="next">Next</button>
     </div>
 
   </div>
@@ -763,8 +755,7 @@
     </div>
 
 
-    <div class="project-carousel">
-      <div class="project-grid reveal" id="projectTrack">
+    <div class="project-grid reveal">
 
       <article class="project-card project-card--1">
         <div class="project-top">
@@ -874,13 +865,6 @@
         </a>
       </article>
 
-      </div>
-    </div>
-
-    <div class="carousel-controls" aria-label="Project carousel controls">
-      <button class="carousel-btn" type="button" data-carousel="project" data-direction="previous">Previous</button>
-      <button class="carousel-btn" type="button" data-carousel="project" data-action="pause" aria-pressed="false">Pause</button>
-      <button class="carousel-btn" type="button" data-carousel="project" data-direction="next">Next</button>
     </div>
 
   </div>
@@ -1260,135 +1244,6 @@
 
   reveals.forEach(element => {
     revealer.observe(element);
-  });
-
-
-  /* =========================
-     PROJECT CAROUSEL
-  ========================= */
-
-  const projectTrack = document.querySelector('#projectTrack');
-  const projectCards = projectTrack ? projectTrack.querySelectorAll('.project-card') : [];
-  let projectIndex = 0;
-
-  const updateProjectCarousel = () => {
-    if (!projectTrack || !projectCards.length) return;
-
-    const visibleCards = window.innerWidth <= 980 ? 1 : 3;
-    const maxIndex = Math.max(0, projectCards.length - visibleCards);
-    projectIndex = Math.min(projectIndex, maxIndex);
-    const cardGap = window.innerWidth <= 980 ? 0 : 28;
-    const cardWidth = projectCards[0].getBoundingClientRect().width;
-
-    projectTrack.style.setProperty(
-      '--project-shift',
-      `${-(projectIndex * (cardWidth + cardGap))}px`
-    );
-
-  };
-
-  const advanceProjectCarousel = () => {
-    const visibleCards = window.innerWidth <= 980 ? 1 : 3;
-    const maxIndex = Math.max(0, projectCards.length - visibleCards);
-    projectIndex = projectIndex >= maxIndex ? 0 : projectIndex + 1;
-    updateProjectCarousel();
-  };
-
-  window.addEventListener('resize', updateProjectCarousel);
-  updateProjectCarousel();
-
-  let projectTimer = null;
-
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    projectTimer = window.setInterval(advanceProjectCarousel, 4500);
-  }
-
-
-  /* =========================
-     CERTIFICATE CAROUSEL
-  ========================= */
-
-  const certificateTrack = document.querySelector('#certTrack');
-  const certificateCards = certificateTrack ? certificateTrack.querySelectorAll('.cert-card') : [];
-  let certificateIndex = 0;
-
-  const updateCertificateCarousel = () => {
-    if (!certificateTrack || !certificateCards.length) return;
-
-    const visibleCards = window.innerWidth <= 980 ? 1 : 4;
-    const maxIndex = Math.max(0, certificateCards.length - visibleCards);
-    certificateIndex = Math.min(certificateIndex, maxIndex);
-    const cardGap = window.innerWidth <= 980 ? 0 : 22;
-    const cardWidth = certificateCards[0].getBoundingClientRect().width;
-
-    certificateTrack.style.setProperty(
-      '--certificate-shift',
-      `${-(certificateIndex * (cardWidth + cardGap))}px`
-    );
-  };
-
-  const advanceCertificateCarousel = () => {
-    const visibleCards = window.innerWidth <= 980 ? 1 : 4;
-    const maxIndex = Math.max(0, certificateCards.length - visibleCards);
-    certificateIndex = certificateIndex >= maxIndex ? 0 : certificateIndex + 1;
-    updateCertificateCarousel();
-  };
-
-  window.addEventListener('resize', updateCertificateCarousel);
-  updateCertificateCarousel();
-
-  let certificateTimer = null;
-
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    certificateTimer = window.setInterval(advanceCertificateCarousel, 4500);
-  }
-
-
-  document.querySelectorAll('.carousel-btn').forEach(button => {
-
-    button.addEventListener('click', () => {
-
-      const carousel = button.dataset.carousel;
-      const direction = button.dataset.direction;
-      const isProject = carousel === 'project';
-      const cards = isProject ? projectCards : certificateCards;
-      const visibleCards = window.innerWidth <= 980 ? 1 : isProject ? 3 : 4;
-      const maxIndex = Math.max(0, cards.length - visibleCards);
-
-      if (button.dataset.action === 'pause') {
-        const timer = isProject ? projectTimer : certificateTimer;
-        const isPaused = Boolean(timer);
-
-        if (isPaused) {
-          window.clearInterval(timer);
-          if (isProject) projectTimer = null;
-          else certificateTimer = null;
-          button.textContent = 'Resume';
-        } else {
-          const newTimer = window.setInterval(isProject ? advanceProjectCarousel : advanceCertificateCarousel, 4500);
-          if (isProject) projectTimer = newTimer;
-          else certificateTimer = newTimer;
-          button.textContent = 'Pause';
-        }
-
-        button.setAttribute('aria-pressed', String(isPaused));
-        return;
-      }
-
-      if (isProject) {
-        projectIndex = direction === 'next'
-          ? projectIndex >= maxIndex ? 0 : projectIndex + 1
-          : projectIndex <= 0 ? maxIndex : projectIndex - 1;
-        updateProjectCarousel();
-      } else {
-        certificateIndex = direction === 'next'
-          ? certificateIndex >= maxIndex ? 0 : certificateIndex + 1
-          : certificateIndex <= 0 ? maxIndex : certificateIndex - 1;
-        updateCertificateCarousel();
-      }
-
-    });
-
   });
 
 
