@@ -129,6 +129,7 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
+    position:relative;
   }
   .brand{
     font-family:'Fraunces', serif;
@@ -137,7 +138,33 @@
     font-weight:500;
   }
   .brand span{color:var(--maroon);}
-  nav ul{display:flex; gap:38px;}
+  nav{order:2; margin-left:auto;}
+  nav ul{
+    position:absolute;
+    top:calc(100% + 1px);
+    right:0;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    width:min(300px, calc(100vw - 48px));
+    padding:10px 24px 18px;
+    background:var(--tint-maroon);
+    border:1px solid var(--line);
+    box-shadow:0 16px 32px rgba(59,38,36,0.12);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(-10px);
+    transition:opacity .25s ease, visibility .25s ease, transform .25s ease;
+    z-index:99;
+  }
+  nav ul.open{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translateY(0);
+  }
+  nav li{border-top:1px solid var(--line);}
   nav a{
     font-family:'Space Grotesk', monospace;
     font-size:12px;
@@ -150,7 +177,31 @@
   }
   nav a:hover, nav a.active{color:var(--ink);}
   nav a.active{border-color:var(--nav-accent, var(--maroon));}
-  .nav-toggle{display:none;}
+  .nav-toggle{
+    display:flex;
+    order:3;
+    margin-left:18px;
+    flex-shrink:0;
+    width:42px;
+    height:42px;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:5px;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .nav-toggle span{
+    width:22px;
+    height:2px;
+    background:currentColor;
+    transition:transform .25s ease, opacity .2s ease;
+  }
+  .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;}
+  .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
   /* ===== BAND STRIP (signature element) ===== */
   .band-strip{
@@ -960,24 +1011,11 @@
     .project-band{min-height:90px;}
     .contact-grid{grid-template-columns:1fr; gap:50px;}
   }
-  @media (max-width:720px){
+  @media (max-width:920px){
     .container, .nav-inner, .footer-inner{padding-left:24px; padding-right:24px;}
-    nav ul{
-      position:fixed; top:78px; left:0; right:0; bottom:0;
-      background:var(--tint-maroon);
-      flex-direction:column; gap:0;
-      padding:10px 24px 40px;
-      transform:translateY(-110%);
-      transition:transform .3s ease;
-      z-index:99;
-    }
-    nav ul.open{transform:translateY(0);}
-    nav li{border-top:1px solid var(--line);}
+    nav ul{width:calc(100vw - 48px);}
     nav a{display:block; padding:18px 0;}
-    .nav-toggle{
-      display:flex; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px;
-    }
-    .nav-toggle span{width:22px; height:2px; background:var(--ink);}
+    .nav-toggle{display:flex;}
     section{padding:80px 0;}
     .tl-item{grid-template-columns:1fr;}
     .tl-item::before{display:none;}

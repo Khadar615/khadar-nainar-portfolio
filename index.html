@@ -36,7 +36,7 @@
       Khadar<span>Nainar</span>
     </a>
 
-    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navList">
       <span></span>
       <span></span>
       <span></span>
@@ -812,7 +812,7 @@
 
         <a
           class="project-link"
-          href="https://github.com/Khadar615/HelixFlow-"
+          href="https://github.com/Khadar615/HelixFlow"
           target="_blank"
           rel="noopener"
         >
@@ -866,7 +866,7 @@
 
         <a
           class="project-link"
-          href="https://github.com/Khadar615"
+          href="https://github.com/Khadar615/Portfolio.git"
           target="_blank"
           rel="noopener"
         >
@@ -1144,6 +1144,7 @@
     const open = navList.classList.toggle('open');
 
     toggle.setAttribute('aria-expanded', open);
+    toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
 
   });
 
@@ -1155,8 +1156,32 @@
       navList.classList.remove('open');
 
       toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open navigation');
 
     });
+
+  });
+
+
+  document.addEventListener('keydown', event => {
+
+    if (event.key === 'Escape' && navList.classList.contains('open')) {
+      navList.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open navigation');
+      toggle.focus();
+    }
+
+  });
+
+
+  document.addEventListener('click', event => {
+
+    if (!event.target.closest('.nav') && navList.classList.contains('open')) {
+      navList.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open navigation');
+    }
 
   });
 
